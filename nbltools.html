@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBLtools - Diffusion MRI Preprocessing Pipeline | NBL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        header {
+            background: white;
+            color: #0d3d73;
+            padding: 2rem 2rem;
+            border-bottom: 4px solid #1e5ba8;
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo-right {
+            flex: 0 0 auto;
+            max-width: 350px;
+        }
+        
+        .logo-right img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .header-text {
+            flex: 1;
+            text-align: left;
+            padding-right: 2rem;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #0d3d73;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 1rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: #1e5ba8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #0d3d73;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        section {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid #e8f0f8;
+        }
+        
+        section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #1e5ba8;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #1e5ba8;
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            color: #0d3d73;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .download-box {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid #1e5ba8;
+            margin: 1.5rem 0;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background: #1e5ba8;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        
+        .download-button:hover {
+            background: #0d3d73;
+        }
+        
+        .github-button {
+            background: #24292e;
+        }
+        
+        .github-button:hover {
+            background: #000;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .features-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .features-list li:before {
+            content: "▸";
+            color: #1e5ba8;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .requirement-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .requirement-card h4 {
+            color: #0d3d73;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .note-box strong {
+            color: #856404;
+        }
+        
+        .code-box {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            color: #333;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #1e5ba8;
+        }
+        
+        footer a {
+            color: #1e5ba8;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+            color: #0d3d73;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .download-button {
+                display: block;
+                text-align: center;
+                margin: 0.5rem 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .logo-right {
+                max-width: 120px;
+            }
+            
+            .header-text {
+                padding: 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-text">
+                <h1>NBLtools</h1>
+                <p>Diffusion MRI Preprocessing Pipeline</p>
+            </div>
+            <div class="logo-right">
+                <img src="logo2.png" alt="NBL Logo">
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">← Back to Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#requirements">Requirements</a></li>
+            <li><a href="#docker">Docker</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>NBLtools is a comprehensive preprocessing pipeline for diffusion MRI data. It provides automated tools for data quality control and correction, ensuring your diffusion data is optimally prepared for analysis.</p>
+            
+            <h3>Key Features</h3>
+            <ul class="features-list">
+                <li>Denoising for noise reduction</li>
+                <li>Gibbs ringing correction</li>
+                <li>Optibet for optimal brain masking</li>
+                <li>Topup for susceptibility-induced distortion correction</li>
+                <li>Eddy current and motion correction</li>
+                <li>Comprehensive quality control reporting</li>
+            </ul>
+        </section>
+        
+        <section id="download">
+            <h2>Download</h2>
+            
+            <div class="download-box">
+                <h4>GitHub Repository</h4>
+                <p style="margin-bottom: 1rem;">Access the source code, documentation, and latest releases</p>
+                
+                <!-- Replace this URL with your actual GitHub repository URL -->
+                <a href="https://github.com/nbl-research/nbltools" class="download-button github-button" target="_blank">View on GitHub</a>
+            </div>
+        </section>
+        
+        <section id="requirements">
+            <h2>System Requirements</h2>
+            
+            <p style="margin-bottom: 1.5rem;">NBLtools requires the following software dependencies to be installed:</p>
+            
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <h4>ANTs</h4>
+                    <p>Advanced Normalization Tools for image registration and segmentation</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>FSL</h4>
+                    <p>FMRIB Software Library for brain imaging analysis</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>TORTOISE 4.0</h4>
+                    <p>Tolerably Obsessive Registration and Tensor Optimization Indolent Software Ensemble</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>Memory (RAM)</h4>
+                    <p><strong>Minimum:</strong> 8GB<br>
+                    <strong>Recommended:</strong> 16GB+ for large datasets</p>
+                </div>
+            </div>
+            
+            <div class="note-box" style="margin-top: 1.5rem;">
+                <strong>Important:</strong> All software dependencies (ANTs, FSL, TORTOISE) must be properly installed and available in your PATH environment variable for Linux/WSL and macOS bash.
+            </div>
+        </section>
+        
+        <section id="docker">
+            <h2>Docker Container</h2>
+            
+            <p>For Windows, Linux, and macOS (Intel) users, we provide a Docker container with all dependencies pre-installed. This is the easiest way to get started with NBLtools.</p>
+            
+            <h3>Running NBLtools with Docker</h3>
+            
+            <div class="download-box">
+                <h4>Interactive Docker Command</h4>
+                <p style="margin-bottom: 1rem;">Run NBLtools interactively with all dependencies included:</p>
+                
+                <div class="code-box">
+                    docker run -it --rm -v /path/to/your/data:/data nbl-research/nbltools
+                </div>
+                
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                    Replace <code>/path/to/your/data</code> with the path to your diffusion MRI data directory
+                </p>
+            </div>
+            
+            <h3>Docker Installation</h3>
+            <ol style="margin-left: 2rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.5rem;">Install Docker Desktop from <a href="https://www.docker.com/products/docker-desktop" target="_blank" style="color: #1e5ba8;">docker.com</a></li>
+                <li style="margin-bottom: 0.5rem;">Pull the NBLtools Docker image (instructions on GitHub)</li>
+                <li style="margin-bottom: 0.5rem;">Run the command above to start processing your data</li>
+            </ol>
+            
+            <div class="note-box" style="margin-top: 1.5rem;">
+                <strong>Note:</strong> macOS Apple Silicon (M-series) users may experience compatibility issues with the Docker container. We recommend using the native installation with the required dependencies.
+            </div>
+        </section>
+        
+        <section id="documentation">
+            <h2>Getting Started</h2>
+            <p>To use NBLtools:</p>
+            <ol style="margin-left: 2rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.5rem;">Visit the GitHub repository for installation instructions</li>
+                <li style="margin-bottom: 0.5rem;">Either install dependencies manually (ANTs, FSL, TORTOISE 4.0) or use Docker</li>
+                <li style="margin-bottom: 0.5rem;">Follow the setup guide in the repository README</li>
+                <li style="margin-bottom: 0.5rem;">Prepare your diffusion MRI data according to the documentation</li>
+                <li style="margin-bottom: 0.5rem;">Run the preprocessing pipeline using the provided scripts</li>
+            </ol>
+        </section>
+        
+        <section id="support">
+            <h2>Support</h2>
+            <p>For questions, bug reports, or feature requests:</p>
+            <ul style="margin-left: 2rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.5rem;">Open an issue on our <a href="https://github.com/nbl-research/nbltools/issues" target="_blank" style="color: #1e5ba8;">GitHub repository</a></li>
+                <li style="margin-bottom: 0.5rem;">Email us at: <a href="mailto:info.nblresearch@gmail.com" style="color: #1e5ba8;">info.nblresearch@gmail.com</a></li>
+            </ul>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 NBL. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="index.html">Home</a> | 
+            <a href="https://github.com/nbl-research" target="_blank">GitHub Organization</a>
+        </p>
+    </footer>
+</body>
+</html>

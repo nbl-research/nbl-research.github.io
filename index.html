@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBL - Neuroimaging & Biophysics Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        header {
+            background: white;
+            color: #0d3d73;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid #1e5ba8;
+        }
+        
+        .logo {
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #0d3d73;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #333;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 1rem 0;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: #1e5ba8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #0d3d73;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        section {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid #e8f0f8;
+        }
+        
+        section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #1e5ba8;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #1e5ba8;
+            padding-bottom: 0.5rem;
+        }
+        
+        .about-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .research-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .research-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #1e5ba8;
+        }
+        
+        .research-card h3 {
+            color: #0d3d73;
+            margin-bottom: 0.75rem;
+        }
+        
+        .software-placeholder {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            color: #666;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            color: #333;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #1e5ba8;
+        }
+        
+        footer a {
+            color: #1e5ba8;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+            color: #0d3d73;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Replace 'logo.png' with your actual logo filename -->
+        <img src="logo.png" alt="NBL Logo" class="logo">
+        <h1>Neuroimaging & Biophysics Lab</h1>
+        <p>The NBL develops advanced methods and tools for diffusion MRI and brain tractography, combining neuroimaging with biophysical modeling</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#software">Software</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <div style="background: #fff3cd; border-bottom: 2px solid #ffc107; padding: 1rem; text-align: center;">
+        <strong>🚧 Website Under Construction</strong> - We're currently building our new site. Check back soon for updates!
+    </div>
+    
+    <div class="container">
+        <section id="about">
+            <h2>About the Lab</h2>
+            <div class="about-content">
+                <p>The Neuroimaging & Biophysics Lab (NBL) is dedicated to advancing our understanding of brain structure and connectivity through innovative computational approaches. Our research focuses on developing cutting-edge methods for diffusion MRI analysis and white matter tractography.</p>
+                <p style="margin-top: 1rem;">We combine expertise in neuroimaging, biophysical modeling, and computational neuroscience to create tools that enable researchers and clinicians to better understand the human brain.</p>
+            </div>
+        </section>
+        
+        <section id="research">
+            <h2>Research Areas</h2>
+            <div class="research-areas">
+                <div class="research-card">
+                    <h3>Diffusion MRI</h3>
+                    <p>Advanced diffusion imaging methods for mapping brain microstructure and tissue properties.</p>
+                </div>
+                <div class="research-card">
+                    <h3>Tractography</h3>
+                    <p>Novel algorithms for reconstructing and analyzing white matter fiber pathways in the brain.</p>
+                </div>
+                <div class="research-card">
+                    <h3>Biophysical Modeling</h3>
+                    <p>Computational models linking MRI signals to underlying tissue biophysics and microstructure.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="software">
+            <h2>Software & Tools</h2>
+            <div class="research-card">
+                <h3>StarTrack</h3>
+                <p>Diffusion MRI analysis and tractography software for mapping brain white matter connectivity.</p>
+                <p style="margin-top: 1rem;"><a href="startrack.html" style="color: #1e5ba8; font-weight: 600;">Learn more and download →</a></p>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <h2>Contact</h2>
+            <p><strong>Email:</strong> <a href="mailto:info.nblresearch@gmail.com">info.nblresearch@gmail.com</a></p>
+            <p><strong>GitHub:</strong> <a href="https://github.com/nbl-research" target="_blank">github.com/nbl-research</a></p>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Neuroimaging & Biophysics Lab. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://github.com/nbl-research" target="_blank">GitHub Organization</a>
+        </p>
+    </footer>
+</body>
+</html>

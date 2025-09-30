@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarTrack - Tractography Software | NBL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        header {
+            background: white;
+            color: #0d3d73;
+            padding: 2rem 2rem;
+            border-bottom: 4px solid #1e5ba8;
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-left, .logo-right {
+            flex: 0 0 auto;
+            max-width: 150px;
+        }
+        
+        .logo-left img, .logo-right img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .header-text {
+            flex: 1;
+            text-align: center;
+            padding: 0 2rem;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #0d3d73;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 1rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: #1e5ba8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #0d3d73;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        section {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid #e8f0f8;
+        }
+        
+        section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #1e5ba8;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #1e5ba8;
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            color: #0d3d73;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .download-box {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid #1e5ba8;
+            margin: 1.5rem 0;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background: #1e5ba8;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        
+        .download-button:hover {
+            background: #0d3d73;
+        }
+        
+        .manual-button {
+            background: #28a745;
+        }
+        
+        .manual-button:hover {
+            background: #218838;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .features-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .features-list li:before {
+            content: "▸";
+            color: #1e5ba8;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .requirement-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .requirement-card h4 {
+            color: #0d3d73;
+            margin-bottom: 0.5rem;
+        }
+        
+        .note-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .note-box strong {
+            color: #856404;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            color: #333;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #1e5ba8;
+        }
+        
+        footer a {
+            color: #1e5ba8;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+            color: #0d3d73;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .download-button {
+                display: block;
+                text-align: center;
+                margin: 0.5rem 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .logo-left, .logo-right {
+                max-width: 120px;
+            }
+            
+            .header-text {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-left">
+                <!-- Replace 'startrack-logo.png' with your actual StarTrack logo filename -->
+                <img src="startrack-logo.png" alt="StarTrack Logo">
+            </div>
+            <div class="header-text">
+                <h1>StarTrack</h1>
+                <p>Diffusion MRI Analysis and Tractography Software</p>
+            </div>
+            <div class="logo-right">
+                <!-- Replace 'logo.png' with your actual NBL logo filename -->
+                <img src="logo2.png" alt="NBL Logo">
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">← Back to Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#requirements">Requirements</a></li>
+            <li><a href="#documentation">Documentation</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>StarTrack is a program to analyse diffusion imaging data using DTI, spherical deconvolution (SD) and tractography. At its core, it computes diffusion tensors or fibre orientation distributions (FOD) and performs whole-brain tractography using different algorithms to map the human white matter anatomy.</p>
+            
+            <p style="margin-top: 1rem;">StarTrack also allows you to display, manipulate and rotate fibre orientation distributions in large brain regions to help understand, calibrate and fine-tune SD parameters.</p>
+            
+            <h3>Key Features</h3>
+            <ul class="features-list">
+                <li>Diffusion Tensor Imaging (DTI) analysis</li>
+                <li>Spherical deconvolution (SD) with FOD computation</li>
+                <li>Whole-brain tractography with multiple algorithms</li>
+                <li>Interactive FOD visualization and manipulation</li>
+                <li>Parameter calibration and fine-tuning tools</li>
+                <li>Compatible with TrackVis, FSL and all software supporting .trk format</li>
+            </ul>
+        </section>
+        
+        <section id="download">
+            <h2>Download</h2>
+            
+            <h3>StarTrack Binaries</h3>
+            <div class="download-box">
+                <h4>StarTrack (Version 20250920)</h4>
+                <p style="margin-bottom: 1.5rem;">Select the version for your operating system:</p>
+                
+                <!-- Replace these URLs with your actual Dropbox download links -->
+                <a href="YOUR_DROPBOX_LINK_LINUX" class="download-button">Download for Linux (x86)</a>
+                <a href="YOUR_DROPBOX_LINK_WINDOWS" class="download-button">Download for Windows (x86)</a>
+                <a href="YOUR_DROPBOX_LINK_MAC_INTEL" class="download-button">Download for macOS (x86)</a>
+                <a href="YOUR_DROPBOX_LINK_MAC_ARM" class="download-button">Download for macOS (Apple Silicon M Chip / arm64)</a>
+            </div>
+            
+            <h3>Documentation</h3>
+            <div class="download-box">
+                <h4>User Manual (to be updated)</h4>
+                
+                <!-- Replace this URL with your Dropbox link to the PDF manual -->
+                <a href="YOUR_DROPBOX_LINK_MANUAL" class="download-button manual-button">Download User Manual (PDF)</a>
+            </div>
+        </section>
+        
+        <section id="requirements">
+            <h2>System Requirements</h2>
+            
+            <p style="margin-bottom: 0.5rem;">This version of StarTrack is based on standalone MATLAB Runtime Compiler 2023b.</p>
+            
+            <div class="note-box">
+                <strong>Note:</strong> A new Python-based version of StarTrack is currently in preparation.
+            </div>
+            
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <h4>Memory (RAM)</h4>
+                    <p><strong>Minimum:</strong> 8GB<br>
+                    <strong>Recommended:</strong> >16GB for analysing large datasets (e.g. HCP and similar)</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>Operating System</h4>
+                    <p>Linux (x86), Windows (x86), macOS (x86), or macOS (Apple Silicon)</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>Runtime</h4>
+                    <p>MATLAB Runtime Compiler 2023b (installation instructions provided with download)</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="documentation">
+            <h2>Getting Started</h2>
+            <p>To install and run StarTrack:</p>
+            <ol style="margin-left: 2rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.5rem;">Install MATLAB Runtime Compiler 2023b (installation instructions included in the download)</li>
+                <li style="margin-bottom: 0.5rem;">Download the appropriate version of StarTrack for your operating system</li>
+                <li style="margin-bottom: 0.5rem;">Extract the archive to a folder on your system</li>
+                <li style="margin-bottom: 0.5rem;">Follow the instructions in the README file on how to start the software in a terminal</li>
+                <li style="margin-bottom: 0.5rem;">Refer to the user manual for detailed usage instructions and examples</li>
+            </ol>
+        </section>
+        
+        <section id="support">
+            <h2>Support</h2>
+            <p>For questions, bug reports, or feature requests, please contact us:</p>
+            <p style="margin-top: 1rem;"><strong>Email:</strong> <a href="mailto:info.nblresearch@gmail.com">info.nblresearch@gmail.com</a></p>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 NBL. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="index.html">Home</a> | 
+            <a href="https://github.com/nbl-research" target="_blank">GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>

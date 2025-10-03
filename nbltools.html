@@ -279,9 +279,9 @@
         <ul>
             <li><a href="index.html">← Back to Home</a></li>
             <li><a href="#overview">Overview</a></li>
-            <li><a href="#download">Download</a></li>
-            <li><a href="#requirements">Requirements</a></li>
-            <li><a href="#docker">Docker</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#direct-installation">Direct Installation</a></li>
+            <li><a href="#docker-installation">Docker Installation</a></li>
         </ul>
     </nav>
     
@@ -289,7 +289,15 @@
         <section id="overview">
             <h2>Overview</h2>
             <p>NBLtools is a comprehensive preprocessing pipeline for diffusion MRI data. It provides automated tools for data quality control and correction, ensuring your diffusion data is optimally prepared for analysis.</p>
-            
+
+            <h3>Installation Options</h3>
+            <p>There are two ways to install and use NBLtools:</p>
+            <ol style="margin-left: 2rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.8rem;"><strong>Native Installation:</strong> Install NBLtools and its dependencies directly on your Linux/Windows Subsystem for Linux (WSL)/macOS system. This provides the best performance and integration with your system.</li>
+                <li style="margin-bottom: 0.8rem;"><strong>Docker Container:</strong> Use our pre-configured Docker image with all dependencies already installed. This is the easiest option for quick setup and ensures compatibility.</li>
+            </ol>
+            <p style="margin-top: 1rem;">Detailed installation instructions for both methods are available below on this page.</p>
+
             <h3>Key Features</h3>
             <ul class="features-list">
                 <li>Denoising for noise reduction</li>
@@ -300,24 +308,42 @@
                 <li>Comprehensive quality control reporting</li>
             </ul>
         </section>
-        
-        <section id="download">
-            <h2>Download</h2>
-            
+
+        <section id="usage">
+            <h2>Usage</h2>
+            <p>NBLtools provides a simple command-line interface to process your diffusion MRI data with a single command:</p>
+
+            <div class="code-box" style="margin-top: 1.5rem;">
+<pre>run_all_tu ./mysubjectdata -f -p -b 1 -i -t -m -e -c 0 -q</pre>
+            </div>
+
+            <p style="margin-top: 1rem; margin-bottom: 1rem;">This command will run the complete preprocessing pipeline on your data. Each parameter controls a specific preprocessing step:</p>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <img src="terminal_runall.png" alt="NBLtools command line parameters" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                The screenshot above shows all available parameters and their descriptions directly from the command line help.
+            </p>
+        </section>
+
+        <section id="direct-installation">
+            <h2>Direct Installation</h2>
+            <p>For users who want to install NBLtools directly on their Linux, Windows Subsystem for Linux (WSL), or macOS system.</p>
+
+            <h3>Download from GitHub</h3>
             <div class="download-box">
                 <h4>GitHub Repository</h4>
                 <p style="margin-bottom: 1rem;">Access the source code, documentation, and latest releases</p>
-                
+
                 <!-- Replace this URL with your actual GitHub repository URL -->
                 <a href="https://github.com/nbl-research/nbltools" class="download-button github-button" target="_blank">View on GitHub</a>
             </div>
-        </section>
-        
-        <section id="requirements">
-            <h2>System Requirements</h2>
-            
+
+            <h3 style="margin-top: 2rem;">System Requirements</h3>
             <p style="margin-bottom: 1.5rem;">NBLtools requires the following software dependencies to be installed:</p>
-            
+
             <div class="requirements-grid">
                 <div class="requirement-card">
                     <h4>ANTs</h4>
@@ -337,54 +363,64 @@
                     <strong>Recommended:</strong> 16GB+ for large datasets</p>
                 </div>
             </div>
-            
-            <div class="note-box" style="margin-top: 1.5rem;">
-                <strong>Important:</strong> All software dependencies (ANTs, FSL, TORTOISE) must be properly installed and available in your PATH environment variable for Linux/WSL and macOS bash.
+
+            <h3 style="margin-top: 2rem;">Setting Up Your Environment</h3>
+            <p>After installing the dependencies, you need to add them to your PATH. Edit your <code>~/.bashrc</code> file (Linux/WSL) or <code>~/.bash_profile</code> (macOS) and add these lines:</p>
+
+            <div class="code-box" style="margin-top: 1rem;">
+<pre># Add NBLtools to PATH (including all subdirectories)
+NBLTOOLS_DIR=/path/to/your/nbltools  # Change to your installation path
+if [ -d "$NBLTOOLS_DIR" ]; then
+  NBLTOOLS_PATHS=$(find $NBLTOOLS_DIR -type d ! -path "*.git/*" | tr '\n' ':')
+  export PATH="$PATH:$NBLTOOLS_PATHS"
+fi
+
+# Example for ANTs (simple path addition)
+export PATH="/path/to/ANTs/bin:$PATH"
+
+# For FSL and TORTOISE, follow their specific installation instructions</pre>
             </div>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>Note:</strong>
+                <br>• Change <code>NBLTOOLS_DIR</code> to where you cloned/installed NBLtools
+                <br>• For ANTs, replace <code>/path/to/ANTs/bin</code> with your actual ANTs installation path
+                <br>• FSL and TORTOISE have specific setup scripts - follow their official installation guides
+            </p>
+
+            <p style="margin-top: 1rem;">After saving the file, reload it by running: <code>source ~/.bashrc</code></p>
         </section>
         
-        <section id="docker">
-            <h2>Docker Container</h2>
-            
+        <section id="docker-installation">
+            <h2>Docker Installation</h2>
+
             <p>For Windows, Linux, and macOS (Intel) users, we provide a Docker container with all dependencies pre-installed. This is the easiest way to get started with NBLtools.</p>
-            
-            <h3>Running NBLtools with Docker</h3>
-            
+
+            <h3>Installing Docker Desktop</h3>
+            <ol style="margin-left: 2rem; margin-top: 1rem;">
+                <li style="margin-bottom: 0.5rem;">Download and install Docker Desktop from <a href="https://www.docker.com/products/docker-desktop" target="_blank" style="color: #1e5ba8;">docker.com</a></li>
+                <li style="margin-bottom: 0.5rem;">Start Docker Desktop and ensure it's running</li>
+                <li style="margin-bottom: 0.5rem;">Pull the NBLtools Docker image (see command below)</li>
+            </ol>
+
+            <h3 style="margin-top: 2rem;">Running NBLtools with Docker</h3>
+
             <div class="download-box">
                 <h4>Interactive Docker Command</h4>
                 <p style="margin-bottom: 1rem;">Run NBLtools interactively with all dependencies included:</p>
-                
+
                 <div class="code-box">
-                    docker run -it -v <path-to-data-folder>:/data rstones/dwi-preproc bash
+                    docker run -it -v /path/to/your/data:/data rstones/dwi-preproc bash
                 </div>
-                
+
                 <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                    Replace <code>/path/to/your/data</code> with the path to your diffusion MRI data directory
+                    Replace <code>/path/to/your/data</code> with the actual path to your diffusion MRI data directory. Your data will be accessible inside the container at <code>/data</code>
                 </p>
             </div>
-            
-            <h3>Docker Installation</h3>
-            <ol style="margin-left: 2rem; margin-top: 1rem;">
-                <li style="margin-bottom: 0.5rem;">Install Docker Desktop from <a href="https://www.docker.com/products/docker-desktop" target="_blank" style="color: #1e5ba8;">docker.com</a></li>
-                <li style="margin-bottom: 0.5rem;">Pull the NBLtools Docker image (instructions on GitHub)</li>
-                <li style="margin-bottom: 0.5rem;">Run the command above to start processing your data</li>
-            </ol>
-            
+
             <div class="note-box" style="margin-top: 1.5rem;">
                 <strong>Note:</strong> macOS Apple Silicon (M-series) users may experience compatibility issues with the Docker container. We recommend using the native installation with the required dependencies.
             </div>
-        </section>
-        
-        <section id="documentation">
-            <h2>Getting Started</h2>
-            <p>To use NBLtools:</p>
-            <ol style="margin-left: 2rem; margin-top: 1rem;">
-                <li style="margin-bottom: 0.5rem;">Visit the GitHub repository for installation instructions</li>
-                <li style="margin-bottom: 0.5rem;">Either install dependencies manually (ANTs, FSL, TORTOISE 4.0) or use Docker</li>
-                <li style="margin-bottom: 0.5rem;">Follow the setup guide in the repository README</li>
-                <li style="margin-bottom: 0.5rem;">Prepare your diffusion MRI data according to the documentation</li>
-                <li style="margin-bottom: 0.5rem;">Run the preprocessing pipeline using the provided scripts</li>
-            </ol>
         </section>
         
         <section id="support">

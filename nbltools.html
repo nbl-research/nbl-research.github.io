@@ -311,13 +311,45 @@
 
         <section id="usage">
             <h2>Usage</h2>
-            <p>NBLtools provides a simple command-line interface to process your diffusion MRI data with a single command:</p>
 
-            <div class="code-box" style="margin-top: 1.5rem;">
-<pre>run_all_tu ./mysubjectdata -f -p -b 1 -i -t -m -e -c 0 -q</pre>
+            <h3>Data Organization</h3>
+            <p>Before running NBLtools, organize your data with the following structure:</p>
+
+            <div class="code-box" style="margin-top: 1rem;">
+<pre>subject01/
+└── dwi/
+    ├── dwi.nii.gz          # Diffusion weighted images
+    ├── dwi.bval            # B-values file
+    ├── dwi.bvec            # B-vectors file
+    ├── dwi_rev.nii.gz      # Reverse phase encode data (optional)
+    ├── dwi_rev.bval        # B-values for reverse phase
+    ├── dwi_rev.bvec        # B-vectors for reverse phase
+    └── acqparams.txt       # Acquisition parameters</pre>
             </div>
 
-            <p style="margin-top: 1rem; margin-bottom: 1rem;">This command will run the complete preprocessing pipeline on your data. Each parameter controls a specific preprocessing step:</p>
+            <div class="note-box" style="margin-top: 1rem;">
+                <strong>Note:</strong> You can add multiple diffusion files (e.g., dwi_01.nii.gz, dwi_02.nii.gz, etc.) with their corresponding .bval and .bvec files. NBLtools will automatically concatenate all files during processing. Remember to adjust the acqparams.txt file accordingly with one row per volume.
+            </div>
+
+            <p style="margin-top: 1rem;">The <code>acqparams.txt</code> file should contain the phase encoding directions and total readout time:</p>
+
+            <div class="code-box" style="margin-top: 0.5rem;">
+<pre>0 1 0 0.086
+0 -1 0 0.086</pre>
+            </div>
+
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                Each row corresponds to a volume: phase encoding direction (x y z) and total readout time in seconds.
+            </p>
+
+            <h3 style="margin-top: 2rem;">Running NBLtools</h3>
+            <p>Once your data is organized, process it with a single command:</p>
+
+            <div class="code-box" style="margin-top: 1.5rem;">
+<pre>run_all_tu ./subject01 -f -p -b 1 -i -t -m -e -c 0 -q</pre>
+            </div>
+
+            <p style="margin-top: 1rem; margin-bottom: 1rem;">Each parameter controls a specific preprocessing step:</p>
 
             <div style="text-align: center; margin: 2rem 0;">
                 <img src="terminal_runall.png" alt="NBLtools command line parameters" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 5px;">

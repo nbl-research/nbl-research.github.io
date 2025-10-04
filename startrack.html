@@ -315,7 +315,15 @@
                 <a href="https://www.dropbox.com/scl/fi/j5pxsw4qen7yf35d12922/ST_MacOS_x86.zip?rlkey=ebh7c1mi1ho41fmf2qe9fiyyx&dl=1" class="download-button">Download for macOS (x86)</a>
                 <a href="https://www.dropbox.com/scl/fi/3yhpnfustsxrv4yl0rg3i/ST_MacOS_ARM.zip?rlkey=19ahnhmg3t3vkl0noiso6xaxg&dl=1" class="download-button">Download for macOS (Apple Silicon M Chip / arm64)</a>
             </div>
-            
+
+            <div class="note-box" style="margin-top: 1.5rem;">
+                <strong>macOS Installation Note:</strong> If macOS prevents StarTrack from opening with a "damaged" or security warning, you need to remove the quarantine attribute. Open Terminal and run:
+                <div class="code-box" style="margin-top: 0.5rem;">
+sudo xattr -cr /path/to/StarTrack.app
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Replace <code>/path/to/StarTrack.app</code> with the actual path to StarTrack. To get the full path, type <code>sudo xattr -cr </code> then drag and drop the StarTrack.app icon into Terminal. Enter your administrator password when prompted.</p>
+            </div>
+
             <h3>Documentation</h3>
             <div class="download-box">
                 <h4>User Manual (to be updated)</h4>

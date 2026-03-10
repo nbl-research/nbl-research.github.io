@@ -302,9 +302,10 @@
             <ul class="features-list">
                 <li>Denoising for noise reduction</li>
                 <li>Gibbs ringing correction</li>
+                <li>SynB0-DISCO synthetic reverse phase-encode generation (when no reverse blip data is available)</li>
                 <li>Optibet for optimal brain masking</li>
                 <li>Topup for susceptibility-induced distortion correction</li>
-                <li>Eddy current and motion correction</li>
+                <li>Eddy current and motion correction (CPU and GPU/CUDA support)</li>
                 <li>Comprehensive quality control reporting</li>
             </ul>
         </section>
@@ -313,7 +314,10 @@
             <h2>Usage</h2>
 
             <h3>Data Organization</h3>
-            <p>Before running NBLtools, organize your data with the following structure:</p>
+            <p>Before running NBLtools, organize your data with the following structure. There are two scenarios depending on whether you have reverse phase-encode data or not.</p>
+
+            <h3 style="font-size: 1.2rem;">Option A: With reverse phase-encode data (standard topup)</h3>
+            <p>Use this when you have acquired reverse phase-encode (blip-up/blip-down) data:</p>
 
             <div class="code-box" style="margin-top: 1rem;">
 <pre>subject01/
@@ -321,32 +325,60 @@
     ├── dwi.nii.gz          # Diffusion weighted images
     ├── dwi.bval            # B-values file
     ├── dwi.bvec            # B-vectors file
-    ├── dwi_rev.nii.gz      # Reverse phase encode data (optional)
+    ├── dwi_rev.nii.gz      # Reverse phase-encode data
     ├── dwi_rev.bval        # B-values for reverse phase
     ├── dwi_rev.bvec        # B-vectors for reverse phase
     └── acqparams.txt       # Acquisition parameters</pre>
             </div>
 
-            <div class="note-box" style="margin-top: 1rem;">
-                <strong>Note:</strong> You can add multiple diffusion files (e.g., dwi_01.nii.gz, dwi_02.nii.gz, etc.) with their corresponding .bval and .bvec files. NBLtools will automatically concatenate all files during processing. Remember to adjust the acqparams.txt file accordingly with one row per volume.
-            </div>
-
-            <p style="margin-top: 1rem;">The <code>acqparams.txt</code> file should contain the phase encoding directions and total readout time:</p>
+            <p style="margin-top: 1rem;">The <code>acqparams.txt</code> file should contain the phase encoding directions and total readout time. Each row specifies: phase encoding direction (x y z) and total readout time in seconds.</p>
 
             <div class="code-box" style="margin-top: 0.5rem;">
 <pre>0 1 0 0.086
 0 -1 0 0.086</pre>
             </div>
 
-            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-                Each row corresponds to a volume: phase encoding direction (x y z) and total readout time in seconds.
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>Note:</strong> You can add multiple diffusion files (e.g., dwi_01.nii.gz, dwi_02.nii.gz, etc.) with their corresponding .bval and .bvec files. NBLtools will automatically concatenate all files during processing. Remember to adjust the acqparams.txt file accordingly with one row per volume.
             </p>
 
-            <h3 style="margin-top: 2rem;">Running NBLtools</h3>
+            <h3 style="font-size: 1.2rem;">Option B: Without reverse phase-encode data (SynB0-DISCO)</h3>
+            <p>When reverse phase-encode data is not available, NBLtools can use <a href="https://github.com/MASILab/Synb0-DISCO" target="_blank" style="color: #1e5ba8;">SynB0-DISCO</a> to generate a synthetic reverse b0 from a T1-weighted image. This requires a T1w in the <code>anat/</code> folder:</p>
+
+            <div class="code-box" style="margin-top: 1rem;">
+<pre>subject01/
+├── anat/
+│   └── subject01_T1w.nii.gz    # T1-weighted image (or subject01_T1w_brain.nii.gz if skull-stripped)
+└── dwi/
+    ├── dwi.nii.gz               # Diffusion weighted images
+    ├── dwi.bval                 # B-values file
+    ├── dwi.bvec                 # B-vectors file
+    └── acqparams.txt            # Acquisition parameters (single line)</pre>
+            </div>
+
+            <p style="margin-top: 1rem;">For SynB0-DISCO, the <code>acqparams.txt</code> file should contain only a single line with the phase encoding direction of your DWI data:</p>
+
+            <div class="code-box" style="margin-top: 0.5rem;">
+<pre>0 1 0 0.086</pre>
+            </div>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>Note:</strong> SynB0-DISCO will automatically generate the reverse phase-encode line. Use the <code>-y</code> flag when running NBLtools to enable this mode (see below). If a skull-stripped T1w is provided (<code>subject01_T1w_brain.nii.gz</code>), it will be used directly; otherwise SynB0-DISCO will perform its own skull stripping.
+            </p>
+
+            <hr style="border: none; border-top: 1px solid #ddd; margin-top: 3rem;">
+
+            <h3 id="running" style="margin-top: 2rem;">Running NBLtools</h3>
             <p>Once your data is organized, process it with a single command:</p>
 
-            <div class="code-box" style="margin-top: 1.5rem;">
+            <p style="margin-top: 1rem;"><strong>With reverse phase-encode data (standard topup):</strong></p>
+            <div class="code-box" style="margin-top: 0.5rem;">
 <pre>run_all_tu ./subject01 -f -p -b 1 -i -t -m -e -c 0 -q</pre>
+            </div>
+
+            <p style="margin-top: 1rem;"><strong>Without reverse phase-encode data (SynB0-DISCO):</strong></p>
+            <div class="code-box" style="margin-top: 0.5rem;">
+<pre>run_all_tu ./subject01 -f -y -p -t -m -e -c 0 -q</pre>
             </div>
 
             <p style="margin-top: 1rem; margin-bottom: 1rem;">Each parameter controls a specific preprocessing step:</p>
@@ -362,7 +394,7 @@
 
         <section id="direct-installation">
             <h2>Direct Installation</h2>
-            <p>For users who want to install NBLtools directly on their Linux, Windows Subsystem for Linux (WSL), or macOS system.</p>
+            <p>For best performance and to take advantage of GPU/CUDA acceleration for eddy, a direct installation on your Linux, Windows Subsystem for Linux (WSL), or macOS system is the preferred option.</p>
 
             <h3>Download from GitHub</h3>
             <div class="download-box">
@@ -374,7 +406,7 @@
             </div>
 
             <h3 style="margin-top: 2rem;">System Requirements</h3>
-            <p style="margin-bottom: 1.5rem;">NBLtools requires the following software dependencies to be installed:</p>
+            <p style="margin-bottom: 1.5rem;">NBLtools requires the following software dependencies to be installed and fully configured in your PATH:</p>
 
             <div class="requirements-grid">
                 <div class="requirement-card">
@@ -382,11 +414,11 @@
                     <p>Advanced Normalization Tools for image registration and segmentation</p>
                 </div>
                 <div class="requirement-card">
-                    <h4>FSL</h4>
-                    <p>FMRIB Software Library for brain imaging analysis</p>
+                    <h4>FSL 6.0.7.17+</h4>
+                    <p>FMRIB Software Library for brain imaging analysis. Install via <a href="https://fsl.fmrib.ox.ac.uk/fsl/docs/install/index.html" target="_blank" style="color: #1e5ba8;">conda</a> and add the <code>fsl-eddy-cuda</code> package for GPU support (requires an NVIDIA GPU with compute capability 3.5+ and a compatible driver — no separate CUDA toolkit needed).</p>
                 </div>
                 <div class="requirement-card">
-                    <h4>TORTOISE 4.0</h4>
+                    <h4>TORTOISE 4.1</h4>
                     <p>Tolerably Obsessive Registration and Tensor Optimization Indolent Software Ensemble</p>
                 </div>
                 <div class="requirement-card">
@@ -397,36 +429,28 @@
             </div>
 
             <h3 style="margin-top: 2rem;">Setting Up Your Environment</h3>
-            <p>After installing the dependencies, you need to add them to your PATH. Edit your <code>~/.bashrc</code> file (Linux/WSL) or <code>~/.bash_profile</code> (macOS) and add these lines:</p>
+            <p>Make sure all dependencies and NBLtools are in your PATH. You can do this by editing your shell configuration file (<code>~/.bashrc</code>, <code>~/.profile</code>, or equivalent), or by installing them system-wide (e.g. via <code>/etc/profile.d/</code>).</p>
 
             <div class="code-box" style="margin-top: 1rem;">
-<pre># Add NBLtools to PATH (including all subdirectories)
-NBLTOOLS_DIR=/path/to/your/nbltools  # Change to your installation path
-if [ -d "$NBLTOOLS_DIR" ]; then
-  NBLTOOLS_PATHS=$(find $NBLTOOLS_DIR -type d ! -path "*.git/*" | tr '\n' ':')
-  export PATH="$PATH:$NBLTOOLS_PATHS"
-fi
+<pre># Add NBLtools preprocessing scripts to PATH
+export PATH="/path/to/nbltools/preprocessing:$PATH"
 
-# Example for ANTs (simple path addition)
+# ANTs
 export PATH="/path/to/ANTs/bin:$PATH"
 
-# For FSL and TORTOISE, follow their specific installation instructions</pre>
+# FSL and TORTOISE - follow their official installation guides
+# FSL via conda will configure itself automatically</pre>
             </div>
 
             <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                <strong>Note:</strong>
-                <br>• Change <code>NBLTOOLS_DIR</code> to where you cloned/installed NBLtools
-                <br>• For ANTs, replace <code>/path/to/ANTs/bin</code> with your actual ANTs installation path
-                <br>• FSL and TORTOISE have specific setup scripts - follow their official installation guides
+                <strong>Note:</strong> Replace the paths above with your actual installation directories. After saving, reload your shell configuration or log out and back in for changes to take effect.
             </p>
-
-            <p style="margin-top: 1rem;">After saving the file, reload it by running: <code>source ~/.bashrc</code></p>
         </section>
         
         <section id="docker-installation">
             <h2>Docker Installation</h2>
 
-            <p>For Windows, Linux, and macOS (Intel) users, we provide a Docker container with all dependencies pre-installed. This is the easiest way to get started with NBLtools.</p>
+            <p>For Windows, Linux, and macOS (Intel) users, we provide a Docker container with all dependencies pre-installed. This is the easiest way to get started with NBLtools. Note that the Docker image uses <code>eddy_cpu</code> by default, so processing will be slower than a native installation with GPU/CUDA acceleration.</p>
 
             <h3>Installing Docker Desktop</h3>
             <ol style="margin-left: 2rem; margin-top: 1rem;">
@@ -437,18 +461,34 @@ export PATH="/path/to/ANTs/bin:$PATH"
 
             <h3 style="margin-top: 2rem;">Running NBLtools with Docker</h3>
 
-            <div class="download-box">
-                <h4>Interactive Docker Command</h4>
-                <p style="margin-bottom: 1rem;">Run NBLtools interactively with all dependencies included:</p>
-
-                <div class="code-box">
-                    docker run -it -v /path/to/your/data:/data rstones/dwi-preproc bash
-                </div>
-
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                    Replace <code>/path/to/your/data</code> with the actual path to your diffusion MRI data directory. Your data will be accessible inside the container at <code>/data</code>
-                </p>
+            <p>First, pull the image:</p>
+            <div class="code-box">
+                docker pull ghcr.io/nbl-research/nbltools:latest
             </div>
+
+            <p style="margin-top: 1.5rem;">Then create a launch script (e.g. <code>run_nbltools.sh</code>) to start the container with all necessary mounts. This single script covers both standard and SynB0-DISCO usage:</p>
+
+            <div class="code-box" style="margin-top: 0.5rem;">
+<pre>#!/bin/bash
+docker run -it \
+  -v /path/to/your/data:/data \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /path/to/freesurfer:/freesurfer \
+  -e HOST_DATA=/path/to/your/data \
+  -e HOST_FREESURFER=/path/to/freesurfer \
+  -e FREESURFER=/freesurfer \
+  ghcr.io/nbl-research/nbltools bash</pre>
+            </div>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                Replace <code>/path/to/your/data</code> with your data directory and <code>/path/to/freesurfer</code> with the directory containing your FreeSurfer <code>license.txt</code>. The Docker socket and FreeSurfer mounts are needed for SynB0-DISCO (<code>-y</code> flag); if you only use standard topup they can be omitted. Your data will be accessible inside the container at <code>/data</code>.
+            </p>
+
+            <p style="margin-top: 1.5rem;">Once inside the container, run the pipeline as described in the <a href="#running" style="color: #1e5ba8;">Running NBLtools</a> section above.</p>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>Note:</strong> SynB0-DISCO runs as a sibling Docker container alongside NBLtools, which is why the Docker socket (<code>/var/run/docker.sock</code>) must be mounted for it to work. The <code>HOST_DATA</code> and <code>HOST_FREESURFER</code> environment variables allow NBLtools to translate container paths back to host paths when launching the SynB0-DISCO container.
+            </p>
 
             <div class="note-box" style="margin-top: 1.5rem;">
                 <strong>Note:</strong> macOS Apple Silicon (M-series) users may experience compatibility issues with the Docker container. We recommend using the native installation with the required dependencies.
@@ -466,7 +506,7 @@ export PATH="/path/to/ANTs/bin:$PATH"
     </div>
     
     <footer>
-        <p>&copy; 2025 NBL. All rights reserved.</p>
+        <p>&copy; 2025-2026 NBL. All rights reserved.</p>
         <p style="margin-top: 0.5rem;">
             <a href="index.html">Home</a> | 
             <a href="https://github.com/nbl-research" target="_blank">GitHub Organization</a>

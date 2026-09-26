@@ -293,8 +293,8 @@
             <h3>Installation Options</h3>
             <p>There are two ways to install and use NBLtools:</p>
             <ol style="margin-left: 2rem; margin-top: 1rem;">
-                <li style="margin-bottom: 0.8rem;"><strong>Native Installation:</strong> Install NBLtools and its dependencies directly on your Linux/Windows Subsystem for Linux (WSL)/macOS system. This provides the best performance and integration with your system.</li>
-                <li style="margin-bottom: 0.8rem;"><strong>Docker Container:</strong> Use our pre-configured Docker image with all dependencies already installed. This is the easiest option for quick setup and ensures compatibility.</li>
+                <li style="margin-bottom: 0.8rem;"><strong><a href="#direct-installation" style="color: #1e5ba8;">Native Installation</a>:</strong> Install NBLtools and its dependencies directly on your Linux/Windows Subsystem for Linux (WSL)/macOS system. This provides the best performance and integration with your system.</li>
+                <li style="margin-bottom: 0.8rem;"><strong><a href="#docker-installation" style="color: #1e5ba8;">Docker Container</a>:</strong> Use our pre-configured Docker image with all dependencies already installed. This is the easiest option for quick setup and ensures compatibility.</li>
             </ol>
             <p style="margin-top: 1rem;">Detailed installation instructions for both methods are available below on this page.</p>
 
@@ -363,7 +363,7 @@
             </div>
 
             <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                <strong>Note:</strong> SynB0-DISCO will automatically generate the reverse phase-encode line. Use the <code>-y</code> flag when running NBLtools to enable this mode (see below). If a skull-stripped T1w is provided (<code>subject01_T1w_brain.nii.gz</code>), it will be used directly; otherwise SynB0-DISCO will perform its own skull stripping. SynB0-DISCO also needs Docker and a FreeSurfer license (see <a href="#direct-installation" style="color: #1e5ba8;">System Requirements</a>).
+                <strong>Note:</strong> SynB0-DISCO will automatically generate the reverse phase-encode line. Use the <code>-y</code> flag when running NBLtools to enable this mode (see below). If a skull-stripped T1w is provided (<code>subject01_T1w_brain.nii.gz</code>), it will be used directly; otherwise SynB0-DISCO will perform its own skull stripping. SynB0-DISCO also needs Docker and a FreeSurfer license (see <a href="#synb0-requirements" style="color: #1e5ba8;">Extra Requirements for SynB0</a>).
             </p>
 
             <hr style="border: none; border-top: 1px solid #ddd; margin-top: 3rem;">
@@ -394,7 +394,7 @@
 
         <section id="direct-installation">
             <h2>Direct Installation</h2>
-            <p>For best performance and to take advantage of GPU/CUDA acceleration for eddy, a direct installation on your Linux, Windows Subsystem for Linux (WSL), or macOS system is the preferred option.</p>
+            <p>For best performance and to take advantage of GPU/CUDA acceleration for eddy, a direct installation on your Linux, Windows Subsystem for Linux (WSL), or macOS system is the preferred option. If you prefer to use Docker, see <a href="#docker-installation" style="color: #1e5ba8;">Docker Installation</a> below.</p>
 
             <h3>Download from GitHub</h3>
             <div class="download-box">
@@ -426,16 +426,25 @@
                 <div class="requirement-card">
                     <h4>Memory (RAM)</h4>
                     <p><strong>Minimum:</strong> 8GB<br>
-                    <strong>Recommended:</strong> 16GB+ for large datasets<br>
-                    <strong>SynB0-DISCO:</strong> 16GB available to Docker</p>
+                    <strong>Recommended:</strong> 16GB+ for large datasets</p>
+                </div>
+            </div>
+
+            <h3 id="synb0-requirements" style="margin-top: 2rem;">Extra Requirements for SynB0</h3>
+            <p style="margin-bottom: 1.5rem;">Only needed if you use SynB0-DISCO, i.e. when your data have no reverse phase-encode images. SynB0-DISCO needs more resources to run than the rest of the pipeline, in particular more memory (RAM).</p>
+
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <h4>Docker</h4>
+                    <p>SynB0-DISCO always runs in a Docker container, also with the direct installation. Install <a href="https://www.docker.com/products/docker-desktop" target="_blank" style="color: #1e5ba8;">Docker Desktop</a> and keep it running.</p>
                 </div>
                 <div class="requirement-card">
-                    <h4>Docker (for SynB0-DISCO)</h4>
-                    <p>SynB0-DISCO (<code>-y</code>) always runs in a Docker container, also with the direct installation. Install <a href="https://www.docker.com/products/docker-desktop" target="_blank" style="color: #1e5ba8;">Docker Desktop</a>, keep it running, and give it at least 16GB of memory (Settings &gt; Resources).</p>
+                    <h4>Memory for Docker</h4>
+                    <p>Give Docker at least 16GB of memory (Docker Desktop: Settings &gt; Resources). With less memory, SynB0-DISCO can fail.</p>
                 </div>
                 <div class="requirement-card">
-                    <h4>FreeSurfer license (for SynB0-DISCO)</h4>
-                    <p>Free from the <a href="https://surfer.nmr.mgh.harvard.edu/registration.html" target="_blank" style="color: #1e5ba8;">FreeSurfer registration page</a>. FreeSurfer itself does not need to be installed: only the <code>license.txt</code> file is used (see Setting Up Your Environment below).</p>
+                    <h4>FreeSurfer license</h4>
+                    <p>Free from the <a href="https://surfer.nmr.mgh.harvard.edu/registration.html" target="_blank" style="color: #1e5ba8;">FreeSurfer registration page</a>. FreeSurfer itself does not need to be installed: only the <code>license.txt</code> file is used. Copy your <code>license.txt</code> into <code>~/freesurfer_license/</code> (see Setting Up Your Environment below).</p>
                 </div>
             </div>
 
@@ -468,7 +477,7 @@ export FREESURFER="$HOME/freesurfer_license"</pre>
         <section id="docker-installation">
             <h2>Docker Installation</h2>
 
-            <p>For Windows, Linux, and macOS (Intel) users, we provide a Docker container with all dependencies pre-installed. This is the easiest way to get started with NBLtools. Note that the Docker image uses <code>eddy_cpu</code> by default, so processing will be slower than a native installation with GPU/CUDA acceleration.</p>
+            <p>For Windows, Linux, and macOS (Intel) users, we provide a Docker container with all dependencies pre-installed. This is the easiest way to get started with NBLtools. Note that the Docker image uses <code>eddy_cpu</code> by default, so processing will be slower than a native installation with GPU/CUDA acceleration. To install NBLtools directly on your system instead, see <a href="#direct-installation" style="color: #1e5ba8;">Direct Installation</a> above.</p>
 
             <h3>Installing Docker Desktop</h3>
             <ol style="margin-left: 2rem; margin-top: 1rem;">

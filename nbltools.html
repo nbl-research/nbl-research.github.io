@@ -363,7 +363,7 @@
             </div>
 
             <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                <strong>Note:</strong> SynB0-DISCO will automatically generate the reverse phase-encode line. Use the <code>-y</code> flag when running NBLtools to enable this mode (see below). If a skull-stripped T1w is provided (<code>subject01_T1w_brain.nii.gz</code>), it will be used directly; otherwise SynB0-DISCO will perform its own skull stripping.
+                <strong>Note:</strong> SynB0-DISCO will automatically generate the reverse phase-encode line. Use the <code>-y</code> flag when running NBLtools to enable this mode (see below). If a skull-stripped T1w is provided (<code>subject01_T1w_brain.nii.gz</code>), it will be used directly; otherwise SynB0-DISCO will perform its own skull stripping. SynB0-DISCO also needs Docker and a FreeSurfer license (see <a href="#direct-installation" style="color: #1e5ba8;">System Requirements</a>).
             </p>
 
             <hr style="border: none; border-top: 1px solid #ddd; margin-top: 3rem;">
@@ -419,17 +419,28 @@
                 </div>
                 <div class="requirement-card">
                     <h4>TORTOISE 4.1</h4>
-                    <p>Tolerably Obsessive Registration and Tensor Optimization Indolent Software Ensemble</p>
+                    <p>Tolerably Obsessive Registration and Tensor Optimization Indolent Software Ensemble, used for denoising and Gibbs unringing.<br>
+                    <strong>Linux (including WSL):</strong> install TORTOISE 4.1.<br>
+                    <strong>macOS:</strong> no installation needed; NBLtools runs TORTOISE through Docker.</p>
                 </div>
                 <div class="requirement-card">
                     <h4>Memory (RAM)</h4>
                     <p><strong>Minimum:</strong> 8GB<br>
-                    <strong>Recommended:</strong> 16GB+ for large datasets</p>
+                    <strong>Recommended:</strong> 16GB+ for large datasets<br>
+                    <strong>SynB0-DISCO:</strong> 16GB available to Docker</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>Docker (for SynB0-DISCO)</h4>
+                    <p>SynB0-DISCO (<code>-y</code>) always runs in a Docker container, also with the direct installation. Install <a href="https://www.docker.com/products/docker-desktop" target="_blank" style="color: #1e5ba8;">Docker Desktop</a>, keep it running, and give it at least 16GB of memory (Settings &gt; Resources).</p>
+                </div>
+                <div class="requirement-card">
+                    <h4>FreeSurfer license (for SynB0-DISCO)</h4>
+                    <p>Free from the <a href="https://surfer.nmr.mgh.harvard.edu/registration.html" target="_blank" style="color: #1e5ba8;">FreeSurfer registration page</a>. FreeSurfer itself does not need to be installed: only the <code>license.txt</code> file is used (see Setting Up Your Environment below).</p>
                 </div>
             </div>
 
             <h3 style="margin-top: 2rem;">Setting Up Your Environment</h3>
-            <p>Make sure all dependencies and NBLtools are in your PATH. You can do this by editing your shell configuration file (<code>~/.bashrc</code>, <code>~/.profile</code>, or equivalent), or by installing them system-wide (e.g. via <code>/etc/profile.d/</code>).</p>
+            <p>Make sure all dependencies and NBLtools are in your PATH. You can do this by editing your shell configuration file (<code>~/.bashrc</code>, <code>~/.zshrc</code> on macOS, <code>~/.profile</code>, or equivalent), or by installing them system-wide (e.g. via <code>/etc/profile.d/</code>).</p>
 
             <div class="code-box" style="margin-top: 1rem;">
 <pre># Add NBLtools preprocessing scripts to PATH
@@ -438,12 +449,19 @@ export PATH="/path/to/nbltools/preprocessing:$PATH"
 # ANTs
 export PATH="/path/to/ANTs/bin:$PATH"
 
-# FSL and TORTOISE - follow their official installation guides
-# FSL via conda will configure itself automatically</pre>
+# FSL (and TORTOISE on Linux) - follow their official installation guides
+# FSL via conda will configure itself automatically
+
+# FreeSurfer license for SynB0-DISCO (-y): the folder that contains license.txt
+export FREESURFER="$HOME/freesurfer_license"</pre>
             </div>
 
             <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
                 <strong>Note:</strong> Replace the paths above with your actual installation directories. After saving, reload your shell configuration or log out and back in for changes to take effect.
+            </p>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                <strong>FreeSurfer license:</strong> <code>FREESURFER</code> must point to the folder that contains <code>license.txt</code> (this is not <code>FREESURFER_HOME</code>). Keep only one file with <code>license</code> in its name in that folder.
             </p>
         </section>
         
@@ -481,7 +499,7 @@ docker run -it \
             </div>
 
             <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                Replace <code>/path/to/your/data</code> with your data directory and <code>/path/to/freesurfer</code> with the directory containing your FreeSurfer <code>license.txt</code>. The Docker socket and FreeSurfer mounts are needed for SynB0-DISCO (<code>-y</code> flag); if you only use standard topup they can be omitted. Your data will be accessible inside the container at <code>/data</code>.
+                Replace <code>/path/to/your/data</code> with your data directory and <code>/path/to/freesurfer</code> with the directory containing your FreeSurfer <code>license.txt</code> (FreeSurfer itself does not need to be installed; any folder containing the license file works). The Docker socket and FreeSurfer mounts are needed for SynB0-DISCO (<code>-y</code> flag); if you only use standard topup they can be omitted. Your data will be accessible inside the container at <code>/data</code>.
             </p>
 
             <p style="margin-top: 1.5rem;">Once inside the container, run the pipeline as described in the <a href="#running" style="color: #1e5ba8;">Running NBLtools</a> section above.</p>
